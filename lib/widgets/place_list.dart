@@ -19,6 +19,14 @@ class _PlaceListState extends State<PlaceList> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content = Center(
+        child: Text(
+      'There is no place added.',
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+    ));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -31,7 +39,7 @@ class _PlaceListState extends State<PlaceList> {
           ),
         ],
       ),
-      body: const Center(child: Text("Hello ")),
+      body: content,
     );
   }
 }
