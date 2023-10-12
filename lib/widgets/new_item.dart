@@ -1,3 +1,4 @@
+import 'package:favorite_places_app/models/place.dart';
 import 'package:flutter/material.dart';
 
 class NewItem extends StatefulWidget {
@@ -9,6 +10,18 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  final _formKey = GlobalKey<FormState>();
+  var _enterTitle = '';
+
+  void _saveItem() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    }
+    Navigator.of(context).pop(
+      Place(title: _enterTitle),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +33,21 @@ class _NewItemState extends State<NewItem> {
         child: Column(
           children: [
             Form(
-              onChanged: () {},
+              key: _formKey,
               child: TextFormField(
                 maxLength: 50,
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1 ||
+                      value.trim().length > 50) {
+                    return 'Must be between 1 and 50 characters.';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _enterTitle = value!;
+                },
                 decoration: const InputDecoration(
                   label: Text(
                     'Title',
@@ -31,7 +56,7 @@ class _NewItemState extends State<NewItem> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _saveItem,
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
