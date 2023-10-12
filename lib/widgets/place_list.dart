@@ -1,4 +1,5 @@
 import 'package:favorite_places_app/models/place.dart';
+import 'package:favorite_places_app/screens/place_detail_screen.dart';
 import 'package:favorite_places_app/widgets/new_item.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,16 @@ class _PlaceListState extends State<PlaceList> {
     });
   }
 
+  void _toPlaceDetailScreen(String title) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PlaceDetailScreen(
+          title: title,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = Center(
@@ -36,21 +47,20 @@ class _PlaceListState extends State<PlaceList> {
     ));
 
     if (_placeList.isNotEmpty) {
-      content = Center(
-        child: ListView.builder(
-          itemCount: _placeList.length,
-          itemBuilder: (context, index) => Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Text(_placeList[index].title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    key: ObjectKey(_placeList[index].title)),
-              ),
-            ],
-          ),
+      content = ListView.builder(
+        itemCount: _placeList.length,
+        itemBuilder: (context, index) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton(
+              onPressed: () {
+                _toPlaceDetailScreen(_placeList[index].title);
+              },
+              child: Text(_placeList[index].title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  key: ObjectKey(_placeList[index].title)),
+            ),
+          ],
         ),
       );
     }
