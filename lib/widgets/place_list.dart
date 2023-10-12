@@ -39,9 +39,17 @@ class _PlaceListState extends State<PlaceList> {
       content = Center(
         child: ListView.builder(
           itemCount: _placeList.length,
-          itemBuilder: (context, index) => Text(
-            _placeList[index].title,
-            style: Theme.of(context).textTheme.titleMedium,
+          itemBuilder: (context, index) => Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Text(_placeList[index].title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    key: ObjectKey(_placeList[index].title)),
+              ),
+            ],
           ),
         ),
       );
