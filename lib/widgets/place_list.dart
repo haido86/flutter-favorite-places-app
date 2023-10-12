@@ -1,3 +1,4 @@
+import 'package:favorite_places_app/models/place.dart';
 import 'package:favorite_places_app/widgets/new_item.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +12,17 @@ class PlaceList extends StatefulWidget {
 }
 
 class _PlaceListState extends State<PlaceList> {
-  void _addItem() {
-    Navigator.of(context).push(MaterialPageRoute(
+  final List<Place> _placeList = [];
+  void _addItem() async {
+    final newItem = await Navigator.of(context).push<Place>(MaterialPageRoute(
       builder: (ctx) => const NewItem(),
     ));
+    if (newItem == null) {
+      return;
+    }
+    setState(() {
+      _placeList.add(newItem);
+    });
   }
 
   @override
@@ -26,6 +34,18 @@ class _PlaceListState extends State<PlaceList> {
             color: Theme.of(context).colorScheme.onBackground,
           ),
     ));
+
+    if (_placeList.isNotEmpty) {
+      content = Center(
+        child: ListView.builder(
+          itemCount: _placeList.length,
+          itemBuilder: (context, index) => Text(
+            _placeList[index].title,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
