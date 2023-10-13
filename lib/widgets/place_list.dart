@@ -1,83 +1,35 @@
-import 'package:favorite_places_app/models/place.dart';
-import 'package:favorite_places_app/screens/place_detail_screen.dart';
-import 'package:favorite_places_app/widgets/new_item.dart';
 import 'package:flutter/material.dart';
 
-class PlaceList extends StatefulWidget {
-  const PlaceList({super.key});
+import 'package:favorite_places_app/models/place.dart';
 
-  @override
-  State<PlaceList> createState() {
-    return _PlaceListState();
-  }
-}
-
-class _PlaceListState extends State<PlaceList> {
-  final List<Place> _placeList = [];
-  void _addItem() async {
-    final newItem = await Navigator.of(context).push<Place>(MaterialPageRoute(
-      builder: (ctx) => const NewItem(),
-    ));
-    if (newItem == null) {
-      return;
-    }
-    setState(() {
-      _placeList.add(newItem);
-    });
-  }
-
-  void _toPlaceDetailScreen(String title) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PlaceDetailScreen(
-          title: title,
-        ),
-      ),
-    );
-  }
+class PlaceList extends StatelessWidget {
+  final List<Place> placeList;
+  const PlaceList({
+    super.key,
+    required this.placeList,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Center(
-        child: Text(
-      'There is no place added.',
-      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-    ));
-
-    if (_placeList.isNotEmpty) {
-      content = ListView.builder(
-        itemCount: _placeList.length,
-        itemBuilder: (context, index) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextButton(
-              onPressed: () {
-                _toPlaceDetailScreen(_placeList[index].title);
-              },
-              child: Text(_placeList[index].title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  key: ObjectKey(_placeList[index].title)),
+    if (placeList.isEmpty) {
+      return Center(
+          child: Text(
+        'There is no place added.',
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onBackground,
             ),
-          ],
-        ),
-      );
+      ));
     }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Your places',
+    return ListView.builder(
+      itemCount: placeList.length,
+      itemBuilder: (context, index) => ListTile(
+        title: TextButton(
+          onPressed: () {},
+          child: Text(placeList[index].title,
+              style: Theme.of(context).textTheme.titleMedium,
+              key: ObjectKey(placeList[index].title)),
         ),
-        actions: [
-          IconButton(
-            onPressed: _addItem,
-            icon: const Icon(Icons.add),
-          ),
-        ],
       ),
-      body: content,
     );
   }
 }
