@@ -29,6 +29,10 @@ class PlaceList extends StatelessWidget {
             builder: (ctx) => PlaceDetailScreen(place: placeList[index]),
           ));
         },
+        leading: CircleAvatar(
+          radius: 26,
+          backgroundImage: FileImage(placeList[index].image),
+        ),
         title: Text(placeList[index].title,
             style: Theme.of(context).textTheme.titleMedium,
             key: ObjectKey(placeList[index].title)),
